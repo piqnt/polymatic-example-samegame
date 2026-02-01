@@ -63,25 +63,25 @@ export class Terminal extends Middleware<MainContext> {
     this.binder.data(this.context.tiles);
   };
 
-  tilesDriver = Driver.create<Tile, TileComponent>({
-    filter: (tile) => true,
-    enter: (tile: Tile) => {
+  tileDriver = Driver.create<Tile, TileComponent>({
+    filter: (d) => d?.type === "tile",
+    enter: (tile) => {
       const component = new TileComponent(tile);
       component.on("click", () => this.emit("user-click", tile));
       component.appendTo(this.board);
       return component;
     },
-    update: (tile: Tile, component) => {
+    update: (tile, component) => {
       component.setState(tile);
     },
-    exit: (tile: Tile, component) => {
+    exit: (tile, component) => {
       component.exit();
     },
   });
 
   binder = Dataset.create<Tile>({
     key: (obj) => obj.key,
-    drivers: [this.tilesDriver],
+    drivers: [this.tileDriver],
   });
 }
 
