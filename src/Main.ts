@@ -3,10 +3,10 @@
  * Licensed under the MIT license
  */
 
-import * as Stage from "stage-js";
-import { Middleware, Runtime } from "polymatic";
+import { type Application, type Container } from "pixi.js";
+import { Middleware } from "polymatic";
 
-import { Loader } from "./Loader";
+import { PixiManager, type Textures } from "./PixiManager";
 import { Terminal } from "./Terminal";
 import { Gameplay } from "./Gameplay";
 import { type Tile } from "./Model";
@@ -15,18 +15,19 @@ import { FrameLoop } from "./FrameLoop";
 export interface MainContext {
   width: number;
   height: number;
-  tiles: Tile[];
-  stage: Stage.Root;
+  tiles?: Tile[];
+
+  pixi?: Application;
+  scene?: Container;
+  textures?: Textures;
 }
 
-export class Main extends Middleware {
+export class Main extends Middleware<MainContext> {
   constructor() {
     super();
     this.use(new FrameLoop());
-    this.use(new Loader());
+    this.use(new PixiManager());
     this.use(new Terminal());
     this.use(new Gameplay());
   }
 }
-
-Runtime.activate(new Main(), { width: 8, height: 8 });

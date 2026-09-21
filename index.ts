@@ -1,5 +1,5 @@
-import { Middleware } from "polymatic";
+import { Runtime } from "polymatic";
 
 import { Main } from "./src/Main";
 
-Middleware.activate(new Main(), { width: 8, height: 8 });
+Runtime.activate(new Main(), { width: 8, height: 8 });
